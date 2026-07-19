@@ -36,30 +36,16 @@ class ResonantFire(nn.Module):
         n,
         omega=0.2,
         damping=-0.05,
-        reset_x=0.0,
-        reset_y=0.0,
         threshold=1.0,
     ):
         super().__init__()
 
         self.omega = nn.Parameter(
-            torch.full((n,), omega),
-            requires_grad=True
+            torch.empty(n).uniform_(0.15, 0.35)
         )
 
         self.damping = nn.Parameter(
-            torch.full((n,), damping),
-            requires_grad=True
-        )
-
-        self.reset_x = nn.Parameter(
-            torch.full((n,), reset_x),
-            requires_grad=False
-        )
-
-        self.reset_y = nn.Parameter(
-            torch.full((n,), reset_y),
-            requires_grad=False
+            torch.empty(n).uniform_(-0.08, -0.02)
         )
 
         self.threshold = threshold
@@ -71,9 +57,12 @@ class ResonantFire(nn.Module):
         I : input current
         """
 
+        # Ensure damping stays negative
+        damping = -torch.abs(self.damping)
+
         # Damped oscillator dynamics
-        dx = self.damping * x - self.omega * y + I
-        dy = self.omega * x + self.damping * y
+        dx = damping * x - self.omega * y + I
+        dy = self.omega * x + damping * y
 
         # Euler integration
         x = x + dt * dx
@@ -85,8 +74,7 @@ class ResonantFire(nn.Module):
             self.threshold
         )
 
-        # Reset after spike
-        #x = (1.0 - spikes) * x + spikes * self.reset_x
-        #y = (1.0 - spikes) * y + spikes * self.reset_y
+        #reset = spikes.detach()  
+        #x = x - reset
 
         return spikes.float(), x, y

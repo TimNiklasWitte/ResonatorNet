@@ -48,7 +48,7 @@ class Classifier(nn.Module):
         y = x.clone()
         
         for t in range(1, x.size(0)):
-            y[t] += alpha * y[t-1]
+            y[t] = alpha * y[t-1]
         
         return y
 

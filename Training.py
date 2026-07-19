@@ -1,19 +1,16 @@
 import torch
-import torchvision
 import torch.nn as nn
 from torch.utils.data import DataLoader
-from torchvision import datasets, transforms
 from torch.utils.tensorboard import SummaryWriter
 from snntorch import functional as SF
-
-from snntorch import spikegen
 
 import tqdm
 
 
-
 from N_MNIST import *
 from Classifier import *
+
+NUM_EPOCHS = 16
 
 BATCH_SIZE = 64
 NUM_THREADS = 7 # set lower! It needs a lot of shared memory
@@ -28,13 +25,6 @@ def main():
     
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    #
-    # Augmentation
-    #
-
-    transform = transforms.Compose([
-        transforms.ToTensor()
-    ])
     
     #
     # Dataset
@@ -85,7 +75,7 @@ def main():
     #
     # Train loop
     #
-    for epoch in range(5):
+    for epoch in range(NUM_EPOCHS):
         
         print(f"Epoch {epoch}")
 
