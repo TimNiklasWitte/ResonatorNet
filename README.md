@@ -23,7 +23,7 @@ By the end of training, the two layers diverge clearly. Hidden layer neurons spl
 Figure E: Phase portrait (omega = 0.25, damping = -0.2, I = 0.5):
 Trajectory still spirals, confirming resonator behaviour, but converges to the fixed point must faster than at epoch 0 due to the stronger (more negative) damping. This matches the output layer trend above, meaning neurons there settle on parameter combinations with heavier damping, favouring quicker-decaying oscillations over sustained ones. 
 
-# Conclusion
+## Conclusion
 
 It is possible to train a neural network based on Resonant-and-Fire (RF) neurons on Neuromorphic MNIST where omega and damping are also trained end-to-end with backpropagation like the weight matrices and bias: A test accuracy of about 77% is satisfactory. 
 Temporal patterns characterized by omega and damping in the data can be found.
